@@ -28,3 +28,6 @@ jobs:
 
       - name: Build test Docker image
         run: docker build -f Dockerfiles/test.Dockerfile -t test-image .
+
+      - name: Build user Docker image
+        run: docker build -f Dockerfiles/user.Dockerfile -t user-image .

@@ -1,9 +1,13 @@
-FROM node:20.12-alpine
+FROM node:20-alpine
 
-COPY package.json package-lock.json ./
+WORKDIR /app
 
+COPY package*.json ./
 RUN npm install
 
-COPY ./ ./
+COPY src ./src
+COPY tests ./tests
+COPY *.js ./
+COPY *.mjs ./
 
-CMD [ "npm", "test" ]
+CMD ["npm", "test"]

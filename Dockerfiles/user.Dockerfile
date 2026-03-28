@@ -1,1 +1,12 @@
-FROM fake_repo_to_make_linter_happy_DELETE_THIS
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY src ./src
+COPY *.js ./
+COPY *.mjs ./
+
+CMD ["npm", "start"]
