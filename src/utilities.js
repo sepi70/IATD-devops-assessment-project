@@ -12,7 +12,10 @@ export function wrapString(toWrap, lineLength) {
 
     words.forEach(word => {
         let remainingLength = lineLength - currentLineLength;
-        if (word.length >= remainingLength && word.length <= lineLength || word.length > lineLength && remainingLength < 3) {
+        if (
+            (word.length >= remainingLength && word.length <= lineLength) ||
+            (word.length > lineLength && remainingLength < 3)
+        ) {
             wrapped = wrapped.concat("\n");
             currentLineLength = 0;
             remainingLength = lineLength - currentLineLength;
@@ -30,6 +33,7 @@ export function wrapString(toWrap, lineLength) {
                 second = word.slice(remainingLength - 2, word.length);
                 wrapped = wrapped.concat(" ");
             }
+
             let elements = [];
             let offset = 0;
 
@@ -54,7 +58,7 @@ export function wrapString(toWrap, lineLength) {
                 currentLineLength += word.length + 1;
             }
         }
-    })
+    });
 
     return wrapped;
 }
@@ -87,24 +91,28 @@ export function logSeparated(toPrint, lineLength) {
  * @param {string} date the date to validate
  */
 export function isValidDateString(date) {
-   
-    const daysInMonths = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; // assume 29 days in February for simplicity
-    const segments = date.split("/"); // split the date into the three segments (i.e. DD, MM, YYYY)
+    const daysInMonths = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    const segments = date.split("/");
 
-    if (segments.length !== 3) return false; // if there are too few or too many segments something is wrong
-    if (segments[0].length !== 2 || segments[1].length !== 2 || segments[2].length !== 4) return false; // if there are too few or too many digits in each segment somthing is wrong
+    if (segments.length !== 3) return false;
+    if (segments[0].length !== 2 || segments[1].length !== 2 || segments[2].length !== 4) return false;
     
-    let numbers = [1];
+    let numbers = [];
 
     for (let i = 0; i < 3; i++) {
-        numbers[i] = Number(segments[i]); // convert each of the segments into a number
-        if (isNaN(numbers[i])) return false; // if the result isn't a number something is wrong
+        numbers[i] = Number(segments[i]);
+        if (isNaN(numbers[i])) return false;
     }
 
-    // if there are too many days, too many months or any of the numbers are <= 0 something is wrong
-    if (numbers[1] <= 0 || numbers[1] > 12 || numbers[0] <= 0 || numbers[0] > daysInMonths[numbers[1] - 1] || numbers[2] <= 0) return false;
+    if (
+        numbers[1] <= 0 ||
+        numbers[1] > 12 ||
+        numbers[0] <= 0 ||
+        numbers[0] > daysInMonths[numbers[1] - 1] ||
+        numbers[2] <= 0
+    ) return false;
 
-    return true; // date is valid
+    return true;
 }
 
 /**
@@ -114,15 +122,20 @@ export function isValidDateString(date) {
  * @returns a 5 character alpha-numeric string representing the flight ID
  */
 export function generateFlightId(airline) {
-    if (airline.trim() === "") {
+    const trimmedAirline = airline.trim();
+
+    if (trimmedAirline.length < 2) {
         return undefined;
     }
 
-    
-
     let digits = [];
     for (let i = 0; i < 3; i++) {
-        digits[i] = Math.round(Math.random() * 9);
+        digits[i] = Math.floor(Math.random() * 10);
     }
-    return airline.substring(0, 2).toUpperCase().concat(digits[0].toString(), digits[1].toString(), digits[2].toString());
+
+    return trimmedAirline.substring(0, 2).toUpperCase().concat(
+        digits[0].toString(),
+        digits[1].toString(),
+        digits[2].toString()
+    );
 }
