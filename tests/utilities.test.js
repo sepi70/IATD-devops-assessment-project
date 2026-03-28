@@ -1,7 +1,6 @@
 import { generateFlightId } from "../src/utilities.js";
 
 describe("generateFlightId", () => {
-
     test("should start with first two letters of airline", () => {
         const id = generateFlightId("Qantas");
         expect(id.startsWith("QA")).toBe(true);
@@ -21,5 +20,4 @@ describe("generateFlightId", () => {
         const id = generateFlightId("A");
         expect(id).toBeUndefined();
     });
-
 });
